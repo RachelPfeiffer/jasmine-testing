@@ -61,7 +61,7 @@ $(function() {
 
 
     /* TODO: Write a new test suite named "The menu" */
-$(function() {
+const menu = function() {
   describe('The Menu', function() {
         /* TODO: Write a test that ensures the menu element is
          * hidden by default. You'll have to analyze the HTML and
@@ -79,30 +79,68 @@ $(function() {
 
  const hamburger = document.querySelector('.menu-icon-link');
 
-         it('displays when menu icon is clicked', function() {
+         it('displays when menu icon is clicked, hides when clicked again', function() {
            console.log(hamburger);
            hamburger.click();
            expect(document.body).not.toHaveClass('menu-hidden');
-         });
-
-         it('hides when menu icon is clicked again', function () {
            hamburger.click();
            expect(document.body).toHaveClass('menu-hidden');
-         })
-})
+         });
 });
+};
+
+menu();
 
     /* TODO: Write a new test suite named "Initial Entries" */
+const initialEntries = function() {
+  describe('Initial Entries', function() {
+    /* TODO: Write a test that ensures when the loadFeed
+     * function is called and completes its work, there is at least
+     * a single .entry element within the .feed container.
+     * Remember, loadFeed() is asynchronous so this test will require
+     * the use of Jasmine's beforeEach and asynchronous done() function.
+     */
+     beforeEach(function(done){
+       loadFeed(0, done);
+       });
+     });
 
-        /* TODO: Write a test that ensures when the loadFeed
-         * function is called and completes its work, there is at least
-         * a single .entry element within the .feed container.
-         * Remember, loadFeed() is asynchronous so this test will require
-         * the use of Jasmine's beforeEach and asynchronous done() function.
-         */
+     it('contains at least one blog post', function () {
+       const grabAnEntry = document.querySelectorAll('.entry');
+       expect(grabAnEntry).not.toBe(null);
+     });
+};
+initialEntries();
+
 
     /* TODO: Write a new test suite named "New Feed Selection" */
+const newFeedSelection = function() {
+  let initialFeedText;
+  let updatedFeedText;
 
+  describe('New Feed Selection', function () {
+
+    beforeEach(function (done) {
+      //load feed is a callback to avoid running both loadFeeds at once and returning undefined
+      //load first feed and get innerText
+      loadFeed(0, function () {
+        initialFeedText = document.querySelector('.feed').innerText;
+      });
+
+      //load last feed and get inner text
+      loadFeed((allFeeds.length-1), function() {
+        updatedFeedText = document.querySelector('.feed').innerText;
+        done();
+      });
+    });
+
+  it('changes content when a new feed is loaded', function () {
+    expect(initialFeedText).not.toEqual(updatedFeedText);
+  });
+
+});
+}
+newFeedSelection();
         /* TODO: Write a test that ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
