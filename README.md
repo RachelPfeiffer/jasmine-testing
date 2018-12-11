@@ -6,6 +6,7 @@ In this project we wrote some tests for a web-based application that reads RSS f
 ## Dependencies
 
 jQuery
+
 Jasmine 2.0 http://jasmine.github.io/
 
 ## Using the Project
